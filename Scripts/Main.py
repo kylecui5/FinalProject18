@@ -1,16 +1,10 @@
 """Main File"""
 
-import pyglet
-import Drawer.py
-import ImageAnalyzer.py
+import sys
+import pygame
+import Drawer
+import ImageAnalyzer
 
-window = pyglet.window.Window()
-titleTextOne = pyglet.text.Label('Kyle\'s', font_size = 24, x=window.width//2, y=window.height//2, anchor_x='center', anchor_y='center')
-titleTextTwo = pyglet.text.Label('Quick, Draw!', font_size = 36, x=window.width//2, y=window.height//2, anchor_x='center', anchor_y='center')\
-
-def on_draw():
-    window.clear()
-    titleTextOne.draw()
-    titleTextTwo.draw()
-
-pyglet.app.run()
+print(sys.path)
+pygame.init()
+screen = pygame.display.set_mode((400, 400))
