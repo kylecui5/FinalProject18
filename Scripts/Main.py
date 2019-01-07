@@ -25,9 +25,9 @@ def exampleLoop():
         pygame.display.flip()               # update the display
 '''
 
-def clearScreen(color = (255, 112, 112)):
+def clearScreen(backgroundColor = (255, 112, 112)):
     """Fills entire screen with a single color"""
-    screen.fill(color)
+    screen.fill(backgroundColor)
 
 def homeScreen():
     """Displays Home screen"""
@@ -35,19 +35,23 @@ def homeScreen():
     homeScreenLoop = True
 
     #Draw screen text
+    textColor = (10, 10, 10)
+    inactiveButtonColor = (255, 220, 84)
+    activeButtonColor = (255, 204, 0)
+
     largeFont = pygame.font.SysFont("leelawadeeuisemilight", 48)
     smallFont = pygame.font.SysFont("leelawadeeuisemilight", 36)
 
-    welcomeText = largeFont.render("Kyle's \"Slow, Scribble!\"", 1, (10, 10, 10))
-    playButtonText = smallFont.render("Play!", 1, (10, 10, 10))
-    baselineDrawingsText = smallFont.render("Set Baseline Drawings", 1, (10, 10, 10))
+    welcomeText = largeFont.render("Kyle's \"Slow, Scribble!\"", 1, textColor)
+    playButtonText = smallFont.render("Play!", 1, textColor)
+    baselineDrawingsText = smallFont.render("Set Baseline Drawings", 1, textColor)
 
     welcomeTextPos = welcomeText.get_rect(centerx = 600, y=125)
     playButtonTextPos = playButtonText.get_rect(x = 550, y = 400)
     baselineDrawingsTextPos = baselineDrawingsText.get_rect(x = 430, y = 500)
 
-    pygame.draw.rect(screen, (255, 220, 84), (490, 385, 185, 85))
-    pygame.draw.rect(screen, (255, 220, 84), (375, 485, 430, 85))
+    pygame.draw.rect(screen, inactiveButtonColor, (490, 385, 185, 85))
+    pygame.draw.rect(screen, inactiveButtonColor, (375, 485, 430, 85))
     screen.blit(welcomeText, welcomeTextPos)
     screen.blit(playButtonText, playButtonTextPos)
     screen.blit(baselineDrawingsText, baselineDrawingsTextPos)
@@ -63,16 +67,16 @@ def homeScreen():
 
         if 675 > mousePos[0] > 490 and 470 > mousePos[1] > 385:
             #Hover over play button
-            pygame.draw.rect(screen, (255, 204, 0), (490, 385, 185, 85))
+            pygame.draw.rect(screen, activeButtonColor, (490, 385, 185, 85))
             screen.blit(playButtonText, playButtonTextPos)
         elif 805 > mousePos[0] > 375 and 570 > mousePos[1] > 485:
             #Hover over baseline drawings button
-            pygame.draw.rect(screen, (255, 204, 0), (375, 485, 430, 85))
+            pygame.draw.rect(screen, activeButtonColor, (375, 485, 430, 85))
             screen.blit(baselineDrawingsText, baselineDrawingsTextPos)
         else:
             #Reset buttons
-            pygame.draw.rect(screen, (255, 220, 84), (490, 385, 185, 85))
-            pygame.draw.rect(screen, (255, 220, 84), (375, 485, 430, 85))
+            pygame.draw.rect(screen, inactiveButtonColor, (490, 385, 185, 85))
+            pygame.draw.rect(screen, inactiveButtonColor, (375, 485, 430, 85))
             screen.blit(playButtonText, playButtonTextPos)
             screen.blit(baselineDrawingsText, baselineDrawingsTextPos)
 
@@ -90,12 +94,45 @@ def homeScreen():
             
         pygame.display.flip()
 
-homeScreen()
-
 def baselineDrawings():
     """Displays baseline drawings screen to set baseline drawings"""
-    
+    clearScreen()
+    passWordCheckRunning = True
+    setBaselineDrawingsRunning = False
 
+    #Password input
+    password = "ihopeyoulikemygame"
+    inputText = ''
+    inputBox = pygame.Rect(100, 100, 140, 32)
+    inputBoxActive = False
+
+    while passWordCheckRunning:
+        for e in pygame.event.get():
+            if e.type == pygame.QUIT:
+                pygame.quit()
+                quit()
+            if e.type == pygame.MOUSEBUTTONDOWN:
+                if inputBox.collidepoint(e.pos):
+                    inputBoxActive = True
+                elif inputBox.collidepoint(e.pos):
+                    inputBoxActive = False
+            if e.type == pygame.pygame.KEYDOWN:
+                if inputBoxActive:
+                    if e.key == pygame.K_RETURN:
+                        passWordCheckRunning = False
+                        if inputText == password:
+                            setBaselineDrawingsRunning = True
+                        else:
+                            homeScreen()
+                    elif e.key == pygame.K_BACKSPACE:
+                        inputText = inputText[:-1]
+                    else:
+                        inputText += e.unicode
+
+        pg.draw.rect(screen, (0, 157, 255), inputBox, 2)
+        pygame.display.flip()
+        
+homeScreen()
 
 def play():
     """Plays the actual game"""
