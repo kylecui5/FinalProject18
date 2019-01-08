@@ -8,23 +8,6 @@ import ImageAnalyzer
 pygame.init()
 screen = pygame.display.set_mode((1200, 750))
 
-'''
-def exampleLoop():
-    running = True
-
-    while running:
-        for e in pygame.event.get():    # get each event in the event queue... 
-            if e.type == pygame.QUIT:   # ...and if that event is QUIT...
-                running = False         # ......set running to False so the main loop ends
-        
-            if e.type == pygame.MOUSEMOTION:        # if the event is mouse motion...
-                print(pygame.mouse.get_pos())       # ...print the mouse's locaation
-            if e.type == pygame.MOUSEBUTTONDOWN:    # if the event type is a button press...
-                pygame.draw.circle(screen, (10, 70, 255), pygame.mouse.get_pos(), 20)  # draw a blue circle with radius 20 at the mouse's position
-    
-        pygame.display.flip()               # update the display
-'''
-
 def clearScreen(backgroundColor = (255, 112, 112)):
     """Fills entire screen with a single color"""
     screen.fill(backgroundColor)
@@ -34,7 +17,7 @@ def homeScreen():
     clearScreen()
     homeScreenLoop = True
 
-    #Draw screen text
+    #Draw screen text and buttons
     textColor = (10, 10, 10)
     inactiveButtonColor = (255, 220, 84)
     activeButtonColor = (255, 204, 0)
@@ -49,9 +32,11 @@ def homeScreen():
     welcomeTextPos = welcomeText.get_rect(centerx = 600, y=125)
     playButtonTextPos = playButtonText.get_rect(x = 550, y = 400)
     baselineDrawingsTextPos = baselineDrawingsText.get_rect(x = 430, y = 500)
+    playButtonPos = (490, 385, 185, 85)
+    baselineDrawingsButtonPos = (375, 485, 430, 85)
 
-    pygame.draw.rect(screen, inactiveButtonColor, (490, 385, 185, 85))
-    pygame.draw.rect(screen, inactiveButtonColor, (375, 485, 430, 85))
+    pygame.draw.rect(screen, inactiveButtonColor, playButtonPos)
+    pygame.draw.rect(screen, inactiveButtonColor, baselineDrawingsButtonPos)
     screen.blit(welcomeText, welcomeTextPos)
     screen.blit(playButtonText, playButtonTextPos)
     screen.blit(baselineDrawingsText, baselineDrawingsTextPos)
@@ -67,16 +52,16 @@ def homeScreen():
 
         if 675 > mousePos[0] > 490 and 470 > mousePos[1] > 385:
             #Hover over play button
-            pygame.draw.rect(screen, activeButtonColor, (490, 385, 185, 85))
+            pygame.draw.rect(screen, activeButtonColor, playButtonPos)
             screen.blit(playButtonText, playButtonTextPos)
         elif 805 > mousePos[0] > 375 and 570 > mousePos[1] > 485:
             #Hover over baseline drawings button
-            pygame.draw.rect(screen, activeButtonColor, (375, 485, 430, 85))
+            pygame.draw.rect(screen, activeButtonColor, baselineDrawingsButtonPos)
             screen.blit(baselineDrawingsText, baselineDrawingsTextPos)
         else:
             #Reset buttons
-            pygame.draw.rect(screen, inactiveButtonColor, (490, 385, 185, 85))
-            pygame.draw.rect(screen, inactiveButtonColor, (375, 485, 430, 85))
+            pygame.draw.rect(screen, inactiveButtonColor, playButtonPos)
+            pygame.draw.rect(screen, inactiveButtonColor, baselineDrawingsButtonPos)
             screen.blit(playButtonText, playButtonTextPos)
             screen.blit(baselineDrawingsText, baselineDrawingsTextPos)
 
@@ -85,8 +70,9 @@ def homeScreen():
             if e.type == pygame.MOUSEBUTTONDOWN:
                 if 675 > mousePos[0] > 490 and 470 > mousePos[1] > 385:
                     #Press play button
-                    homeScreenLoop = False
-                    play()
+                    #homeScreenLoop = False
+                    #play()
+                    clearScreen()
                 elif 805 > mousePos[0] > 375 and 570 > mousePos[1] > 485:
                     #Press baseline drawings button 
                     homeScreenLoop = False
@@ -103,8 +89,18 @@ def baselineDrawings():
     #Password input
     password = "ihopeyoulikemygame"
     inputText = ''
-    inputBox = pygame.Rect(100, 100, 140, 32)
+    inputBox = pygame.Rect(350, 282, 500, 50)
     inputBoxActive = False
+
+    textColor = (10, 10, 10)
+    smallFont = pygame.font.SysFont("leelawadeeuisemilight", 36)
+    smallerFont = pygame.font.SysFont("leelawadeeuisemilight", 24)
+    passwordText = smallFont.render("Password:", 1, textColor)
+    passwordTextPos = passwordText.get_rect(x = 525, y = 200)
+    placeholderText = smallerFont.render("Click to enter password...", 1, textColor)
+    placeholderTextPos = placeholderText.get_rect(x = 375, y = 290)
+    screen.blit(passwordText, passwordTextPos)
+    screen.blit(placeholderText, placeholderTextPos)
 
     while passWordCheckRunning:
         for e in pygame.event.get():
@@ -116,8 +112,9 @@ def baselineDrawings():
                     inputBoxActive = True
                 elif inputBox.collidepoint(e.pos):
                     inputBoxActive = False
-            if e.type == pygame.pygame.KEYDOWN:
+            if e.type == pygame.KEYDOWN:
                 if inputBoxActive:
+                    pygame.draw.rect(screen, (255, 112, 112), (351, 283, 499, 45))
                     if e.key == pygame.K_RETURN:
                         passWordCheckRunning = False
                         if inputText == password:
@@ -129,11 +126,32 @@ def baselineDrawings():
                     else:
                         inputText += e.unicode
 
-        pg.draw.rect(screen, (0, 157, 255), inputBox, 2)
+        pygame.draw.rect(screen, (0, 157, 255), inputBox, 2)
         pygame.display.flip()
-        
-homeScreen()
+
+    while setBaselineDrawingsRunning:
+        clearScreen()
+        setBaselineDrawingsRunning = not setBaselineDrawingsRunning
 
 def play():
     """Plays the actual game"""
     
+homeScreen()
+
+##### EXAMPLE CODE BELOW #####
+'''
+def exampleLoop():
+    running = True
+
+    while running:
+        for e in pygame.event.get():    # get each event in the event queue... 
+            if e.type == pygame.QUIT:   # ...and if that event is QUIT...
+                running = False         # ......set running to False so the main loop ends
+        
+            if e.type == pygame.MOUSEMOTION:        # if the event is mouse motion...
+                print(pygame.mouse.get_pos())       # ...print the mouse's locaation
+            if e.type == pygame.MOUSEBUTTONDOWN:    # if the event type is a button press...
+                pygame.draw.circle(screen, (10, 70, 255), pygame.mouse.get_pos(), 20)  # draw a blue circle with radius 20 at the mouse's position
+    
+        pygame.display.flip()               # update the display
+'''
