@@ -111,8 +111,10 @@ def baselineDrawings():
                 if inputBox.collidepoint(e.pos):
                     inputBoxActive = True
                     pygame.draw.rect(screen, (255, 112, 112), (351, 283, 499, 45))
-                elif inputBox.collidepoint(e.pos):
+                else:
                     inputBoxActive = False
+                    inputText = ''
+                    screen.blit(placeholderText, placeholderTextPos)
             if e.type == pygame.KEYDOWN:
                 if inputBoxActive:
                     if e.key == pygame.K_RETURN:
