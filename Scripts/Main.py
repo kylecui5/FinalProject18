@@ -110,11 +110,11 @@ def baselineDrawings():
             if e.type == pygame.MOUSEBUTTONDOWN:
                 if inputBox.collidepoint(e.pos):
                     inputBoxActive = True
+                    pygame.draw.rect(screen, (255, 112, 112), (351, 283, 499, 45))
                 elif inputBox.collidepoint(e.pos):
                     inputBoxActive = False
             if e.type == pygame.KEYDOWN:
                 if inputBoxActive:
-                    pygame.draw.rect(screen, (255, 112, 112), (351, 283, 499, 45))
                     if e.key == pygame.K_RETURN:
                         passWordCheckRunning = False
                         if inputText == password:
