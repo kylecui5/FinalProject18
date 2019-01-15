@@ -1,12 +1,15 @@
 """Main File"""
 
 import sys
+import time
 import pygame
 import Drawer
 import ImageAnalyzer
 
 pygame.init()
+
 screen = pygame.display.set_mode((1200, 750))
+drawings = ["coffee mug", "apple", "clock", "basketball", "baseball", "candle", "bird", "smiley face"]
 
 def clearScreen(backgroundColor = (255, 112, 112)):
     """Fills entire screen with a single color"""
@@ -29,7 +32,7 @@ def homeScreen():
     playButtonText = smallFont.render("Play!", 1, textColor)
     baselineDrawingsText = smallFont.render("Set Baseline Drawings", 1, textColor)
 
-    welcomeTextPos = welcomeText.get_rect(centerx = 600, y=125)
+    welcomeTextPos = welcomeText.get_rect(centerx = 600, y = 125)
     playButtonTextPos = playButtonText.get_rect(x = 550, y = 400)
     baselineDrawingsTextPos = baselineDrawingsText.get_rect(x = 430, y = 500)
     playButtonPos = (490, 385, 185, 85)
@@ -75,19 +78,52 @@ def homeScreen():
                     clearScreen()
                 elif 805 > mousePos[0] > 375 and 570 > mousePos[1] > 485:
                     #Press baseline drawings button 
+
+                    print("pressed baseline drawings button")
+
                     homeScreenLoop = False
                     baselineDrawings()
             
         pygame.display.flip()
 
+def showWhatToDraw(titleOfDrawing):
+    """Displays a screen with text to tell the user what to draw"""
+    clearScreen()
+
+    userHasNotClicked = True
+
+    textColor = (10, 10, 10)
+    largeFont = pygame.font.SysFont("leelawadeeuisemilight", 48)
+    drawText = largeFont.render(f"Draw a(n): {titleOfDrawing}!", 1, textColor)
+    drawTextPos = drawText.get_rect(centerx = 600, y=125)
+
+    screen.blit(drawText, drawTextPos)
+    pygame.display.flip()
+
+    print(f"Blit {titleOfDrawing} to screen")
+
+
+    while userHasNotClicked:
+        for e in pygame.event.get():
+            if e.type == pygame.QUIT:
+                pygame.quit()
+                quit()
+            if e.type == pygame.MOUSEBUTTONDOWN:
+                userHasNotClicked = False
+    
+    print("exiting showWhatToDraw")
+                
 def baselineDrawings():
     """Displays baseline drawings screen to set baseline drawings"""
     clearScreen()
     passWordCheckRunning = True
     setBaselineDrawingsRunning = False
 
-    #Password input
-    password = "ihopeyoulikemygame"
+    #Password check
+
+    print("in password check")
+
+    password = "poopoo"
     inputText = ''
     inputBox = pygame.Rect(350, 282, 500, 50)
     inputBoxActive = False
@@ -102,6 +138,9 @@ def baselineDrawings():
     screen.blit(passwordText, passwordTextPos)
     screen.blit(placeholderText, placeholderTextPos)
 
+
+    print("about to run password check loop")
+
     while passWordCheckRunning:
         for e in pygame.event.get():
             if e.type == pygame.QUIT:
@@ -109,9 +148,15 @@ def baselineDrawings():
                 quit()
             if e.type == pygame.MOUSEBUTTONDOWN:
                 if inputBox.collidepoint(e.pos):
+                    
+                    print("mouse click collided with input box")
+
                     inputBoxActive = True
                     pygame.draw.rect(screen, (255, 112, 112), (351, 283, 499, 45))
                 else:
+
+                    print("mouse click outside of input box")
+
                     inputBoxActive = False
                     inputText = ''
                     screen.blit(placeholderText, placeholderTextPos)
@@ -120,40 +165,38 @@ def baselineDrawings():
                     if e.key == pygame.K_RETURN:
                         passWordCheckRunning = False
                         if inputText == password:
+
+                            print("access granted")
+
                             setBaselineDrawingsRunning = True
                         else:
                             homeScreen()
                     elif e.key == pygame.K_BACKSPACE:
                         inputText = inputText[:-1]
                     else:
+
+                        print(f"adding {e.unicode} to inputText string")
+
                         inputText += e.unicode
 
         pygame.draw.rect(screen, (0, 157, 255), inputBox, 2)
         pygame.display.flip()
 
+    #Admin draws each object and saves the data to the BaselineDrawings.txt file
     while setBaselineDrawingsRunning:
+
+        print("prepared to set baseline drawings")
+
         clearScreen()
-        setBaselineDrawingsRunning = not setBaselineDrawingsRunning
+        for n in range(len(drawings)):
+            showWhatToDraw(drawings[n])
+            clearScreen()
+            Drawer.draw(drawings[n])
+
+            setBaselineDrawingsRunning = False
+        
 
 def play():
     """Plays the actual game"""
     
 homeScreen()
-
-##### EXAMPLE CODE BELOW #####
-'''
-def exampleLoop():
-    running = True
-
-    while running:
-        for e in pygame.event.get():    # get each event in the event queue... 
-            if e.type == pygame.QUIT:   # ...and if that event is QUIT...
-                running = False         # ......set running to False so the main loop ends
-        
-            if e.type == pygame.MOUSEMOTION:        # if the event is mouse motion...
-                print(pygame.mouse.get_pos())       # ...print the mouse's locaation
-            if e.type == pygame.MOUSEBUTTONDOWN:    # if the event type is a button press...
-                pygame.draw.circle(screen, (10, 70, 255), pygame.mouse.get_pos(), 20)  # draw a blue circle with radius 20 at the mouse's position
-    
-        pygame.display.flip()               # update the display
-'''
