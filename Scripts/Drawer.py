@@ -57,7 +57,7 @@ def draw(drawing):
 
         #Check for mouse clicks
         for e in pygame.event.get():
-            if e.type == pygame.mouse.get_pressed()[0]:
+            if e.type == pygame.MOUSEBUTTONDOWN:
                 if 550 > mousePos[0] > 400 and 670 > mousePos[1] > 585:
                     #Press Restart button
                     screen.fill(255, 112, 112)
@@ -67,7 +67,7 @@ def draw(drawing):
                     #Press Finished button
                     screen.fill(255, 112, 112)
                     stillDrawing = False
-                else:
+            elif pygame.mouse.get_pressed()[0]:
 
                     print("drawing a circle")
 
