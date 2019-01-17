@@ -5,7 +5,38 @@ pygame.init()
 
 screen = pygame.display.set_mode((1200, 750))
 
-def draw(drawing):
+def showWhatToDraw(titleOfDrawing):
+    """Displays a screen with text to tell the user what to draw"""
+    clearScreen()
+
+    userHasNotClicked = True
+
+    textColor = (10, 10, 10)
+    largeFont = pygame.font.SysFont("leelawadeeuisemilight", 48)
+    drawText = largeFont.render(f"Draw a(n): {titleOfDrawing}!", 1, textColor)
+    drawTextPos = drawText.get_rect(centerx = 600, y=125)
+
+    screen.blit(drawText, drawTextPos)
+    pygame.display.flip()
+
+    print(f"Blit {titleOfDrawing} to screen")
+
+
+    while userHasNotClicked:
+        for e in pygame.event.get():
+            if e.type == pygame.QUIT:
+                pygame.quit()
+                quit()
+            if e.type == pygame.MOUSEBUTTONDOWN:
+                userHasNotClicked = False
+    
+    print("exiting showWhatToDraw")
+
+def writeCoordsToFile(listOfCoords):
+    """Writes the list of coordinates to a saved text file"""
+
+
+def draw(drawing, settingBaselineDrawings):
     """"Lets the user draw an object"""
     stillDrawing = True
 
@@ -79,7 +110,7 @@ def draw(drawing):
                     listOfMouseCoords += pygame.mouse.get_pos()
 
                     if coordsCount % 50 == 0:
-                        listOfMouseCoordsString += f"\n{pygame.mouse.get_pos()}"
+                        listOfMouseCoordsString += f"\n{pygame.mouse.get_pos()},"
                     coordsCount += 1
 
                     print(listOfMouseCoordsString)
@@ -93,3 +124,6 @@ def draw(drawing):
                     else:
                         circleCount += 3
         pygame.display.flip()
+
+    if settingBaselineDrawings:
+        writeCoordsToFile(listOfMouseCoordsString)

@@ -73,9 +73,9 @@ def homeScreen():
             if e.type == pygame.MOUSEBUTTONDOWN:
                 if 675 > mousePos[0] > 490 and 470 > mousePos[1] > 385:
                     #Press play button
-                    #homeScreenLoop = False
-                    #play()
-                    clearScreen()
+                    homeScreenLoop = False
+                    play()
+
                 elif 805 > mousePos[0] > 375 and 570 > mousePos[1] > 485:
                     #Press baseline drawings button 
 
@@ -85,33 +85,6 @@ def homeScreen():
                     baselineDrawings()
             
         pygame.display.flip()
-
-def showWhatToDraw(titleOfDrawing):
-    """Displays a screen with text to tell the user what to draw"""
-    clearScreen()
-
-    userHasNotClicked = True
-
-    textColor = (10, 10, 10)
-    largeFont = pygame.font.SysFont("leelawadeeuisemilight", 48)
-    drawText = largeFont.render(f"Draw a(n): {titleOfDrawing}!", 1, textColor)
-    drawTextPos = drawText.get_rect(centerx = 600, y=125)
-
-    screen.blit(drawText, drawTextPos)
-    pygame.display.flip()
-
-    print(f"Blit {titleOfDrawing} to screen")
-
-
-    while userHasNotClicked:
-        for e in pygame.event.get():
-            if e.type == pygame.QUIT:
-                pygame.quit()
-                quit()
-            if e.type == pygame.MOUSEBUTTONDOWN:
-                userHasNotClicked = False
-    
-    print("exiting showWhatToDraw")
                 
 def baselineDrawings():
     """Displays baseline drawings screen to set baseline drawings"""
@@ -189,12 +162,13 @@ def baselineDrawings():
 
         clearScreen()
         for n in range(len(drawings)):
-            showWhatToDraw(drawings[n])
+            Drawer.showWhatToDraw(drawings[n])
             clearScreen()
-            Drawer.draw(drawings[n])
+            Drawer.draw(drawings[n], True)
 
-            setBaselineDrawingsRunning = False
-        
+        setBaselineDrawingsRunning = False
+    
+    homeScreen()
 
 def play():
     """Plays the actual game"""
