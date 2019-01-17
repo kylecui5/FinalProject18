@@ -31,12 +31,13 @@ def draw(drawing):
 
     pygame.display.flip()
 
+    listOfMouseCoordsString = f"{drawing}:"
+    listOfMouseCoords = []
+    circleCount = 0
+    coordsCount = 1
+
     #Check for user input
     while stillDrawing:
-        for e in pygame.event.get():
-            if e.type == pygame.QUIT:
-                pygame.quit()
-                quit()
 
         mousePos = pygame.mouse.get_pos()
 
@@ -55,8 +56,10 @@ def draw(drawing):
             screen.blit(restartText, restartTextPos)
             screen.blit(finishedText, finishedTextPos)
 
-        #Check for mouse clicks
         for e in pygame.event.get():
+            if e.type == pygame.QUIT:
+                pygame.quit()
+                quit()
             if e.type == pygame.MOUSEBUTTONDOWN:
                 if 550 > mousePos[0] > 400 and 670 > mousePos[1] > 585:
                     #Press Restart button
@@ -67,26 +70,26 @@ def draw(drawing):
                     #Press Finished button
                     screen.fill(255, 112, 112)
                     stillDrawing = False
+
+            #Mouse is being held (mouse is drawing)
             elif pygame.mouse.get_pressed()[0]:
 
-                    print("drawing a circle")
+                    print(f"drawing a circle at {pygame.mouse.get_pos()}")
+
+                    listOfMouseCoords += pygame.mouse.get_pos()
+
+                    if coordsCount % 50 == 0:
+                        listOfMouseCoordsString += f"\n{pygame.mouse.get_pos()}"
+                    coordsCount += 1
+
+                    print(listOfMouseCoordsString)
 
                     pygame.draw.circle(screen, (10, 70, 255), pygame.mouse.get_pos(), 3)
+
+                    if circleCount > 0:
+                        #Connects the two previous drawn circles with a line
+                        pygame.draw.line(screen, (10, 70, 255), (listOfMouseCoords[circleCount-3], listOfMouseCoords[circleCount-2]), (listOfMouseCoords[circleCount-1], listOfMouseCoords[circleCount]), 6)
+                        circleCount += 2
+                    else:
+                        circleCount += 3
         pygame.display.flip()
-
-'''
-def exampleLoop():
-    running = True
-
-    while running:
-        for e in pygame.event.get():    # get each event in the event queue... 
-            if e.type == pygame.QUIT:   # ...and if that event is QUIT...
-                running = False         # ......set running to False so the main loop ends
-        
-            if e.type == pygame.MOUSEMOTION:        # if the event is mouse motion...
-                print(pygame.mouse.get_pos())       # ...print the mouse's locaation
-            if e.type == pygame.MOUSEBUTTONDOWN:    # if the event type is a button press...
-                pygame.draw.circle(screen, (10, 70, 255), pygame.mouse.get_pos(), 20)  # draw a blue circle with radius 20 at the mouse's position
-    
-        pygame.display.flip()               # update the display
-'''
