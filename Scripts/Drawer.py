@@ -1,4 +1,5 @@
 import sys
+import os
 import pygame
 
 pygame.init()
@@ -7,7 +8,7 @@ screen = pygame.display.set_mode((1200, 750))
 
 def showWhatToDraw(titleOfDrawing):
     """Displays a screen with text to tell the user what to draw"""
-    clearScreen()
+    screen.fill((255, 112, 112))
 
     userHasNotClicked = True
 
@@ -35,6 +36,10 @@ def showWhatToDraw(titleOfDrawing):
 def writeCoordsToFile(listOfCoords):
     """Writes the list of coordinates to a saved text file"""
 
+    path = os.path.relpath('..\SavedData\BaselineDrawings.txt')
+
+    baselineFile = open(path, "r+")
+    baselineFile.write(listOfCoords)
 
 def draw(drawing, settingBaselineDrawings):
     """"Lets the user draw an object"""
@@ -94,12 +99,12 @@ def draw(drawing, settingBaselineDrawings):
             if e.type == pygame.MOUSEBUTTONDOWN:
                 if 550 > mousePos[0] > 400 and 670 > mousePos[1] > 585:
                     #Press Restart button
-                    screen.fill(255, 112, 112)
+                    screen.fill((255, 112, 112))
                     draw(drawing)
                     stillDrawing = False
                 elif 820 > mousePos[0] > 660 and 670 > mousePos[1] > 585:
                     #Press Finished button
-                    screen.fill(255, 112, 112)
+                    screen.fill((255, 112, 112))
                     stillDrawing = False
 
             #Mouse is being held (mouse is drawing)
@@ -123,7 +128,14 @@ def draw(drawing, settingBaselineDrawings):
                         circleCount += 2
                     else:
                         circleCount += 3
+            else:
+                circleCount = 0
+
         pygame.display.flip()
+
+    listOfMouseCoordsString = f"{len(listOfMouseCoords)}\n" + listOfMouseCoordsString
+
+    print(listOfMouseCoordsString)
 
     if settingBaselineDrawings:
         writeCoordsToFile(listOfMouseCoordsString)

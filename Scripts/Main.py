@@ -1,7 +1,6 @@
 """Main File"""
 
 import sys
-import time
 import pygame
 import Drawer
 import ImageAnalyzer
