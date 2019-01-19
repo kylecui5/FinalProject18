@@ -1,5 +1,6 @@
 import sys
 import os
+import json
 import pygame
 
 pygame.init()
@@ -34,12 +35,14 @@ def showWhatToDraw(titleOfDrawing):
     print("exiting showWhatToDraw")
 
 def writeCoordsToFile(listOfCoords):
-    """Writes the list of coordinates to a saved text file"""
+    """Writes the list of coordinates to a saved text file using JSON"""
 
-    path = os.path.relpath('..\SavedData\BaselineDrawings.txt')
-
-    baselineFile = open(path, "r+")
-    baselineFile.write(listOfCoords)
+    path = os.path.abspath('BaselineDrawings.txt')
+    
+    print(path)
+    
+    baselineFile = open(path, "a")
+    json.dump(listOfCoords, baselineFile)
 
 def draw(drawing, settingBaselineDrawings):
     """"Lets the user draw an object"""
@@ -67,8 +70,9 @@ def draw(drawing, settingBaselineDrawings):
 
     pygame.display.flip()
 
-    listOfMouseCoordsString = f"{drawing}:"
+    listOfMouseCoordsString = ""
     listOfMouseCoords = []
+    shortenedListOfMouseCoords = []
     circleCount = 0
     coordsCount = 1
 
@@ -100,7 +104,7 @@ def draw(drawing, settingBaselineDrawings):
                 if 550 > mousePos[0] > 400 and 670 > mousePos[1] > 585:
                     #Press Restart button
                     screen.fill((255, 112, 112))
-                    draw(drawing)
+                    draw(drawing, settingBaselineDrawings)
                     stillDrawing = False
                 elif 820 > mousePos[0] > 660 and 670 > mousePos[1] > 585:
                     #Press Finished button
@@ -115,10 +119,8 @@ def draw(drawing, settingBaselineDrawings):
                     listOfMouseCoords += pygame.mouse.get_pos()
 
                     if coordsCount % 50 == 0:
-                        listOfMouseCoordsString += f"\n{pygame.mouse.get_pos()},"
+                        shortenedListOfMouseCoords.append(pygame.mouse.get_pos())
                     coordsCount += 1
-
-                    print(listOfMouseCoordsString)
 
                     pygame.draw.circle(screen, (10, 70, 255), pygame.mouse.get_pos(), 3)
 
@@ -133,9 +135,12 @@ def draw(drawing, settingBaselineDrawings):
 
         pygame.display.flip()
 
-    listOfMouseCoordsString = f"{len(listOfMouseCoords)}\n" + listOfMouseCoordsString
+    listOfMouseCoordsString = f"{len(shortenedListOfMouseCoords)}\n {drawing}:\n {shortenedListOfMouseCoords}"
 
+    print(f"Long list: {listOfMouseCoords}")
+    print(f"Short list: {shortenedListOfMouseCoords}")
     print(listOfMouseCoordsString)
+    print(settingBaselineDrawings)
 
     if settingBaselineDrawings:
         writeCoordsToFile(listOfMouseCoordsString)
