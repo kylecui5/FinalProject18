@@ -8,15 +8,23 @@ pygame.init()
 screen = pygame.display.set_mode((1200, 750))
 
 class Drawer:
-    
+    """Provides drawing functions"""
+
+    def __init__(self, textColor, largeFont, smallFont, inactiveButtonColor, activeButtonColor):
+        """Initializes variables"""
+        self.textColor = textColor
+        self.largeFont = largeFont
+        self.smallFont = smallFont
+        self.inactiveButtonColor = inactiveButtonColor
+        self.activeButtonColor = activeButtonColor
+        self.backgroundColor = (255, 112, 112)
+
     def showWhatToDraw(self, titleOfDrawing):
         """Displays a screen with text to tell the user what to draw"""
 
         userHasNotClicked = True
 
-        textColor = (10, 10, 10)
-        largeFont = pygame.font.SysFont("leelawadeeuisemilight", 48)
-        drawText = largeFont.render(f"Draw a(n): {titleOfDrawing}!", 1, textColor)
+        drawText = self.largeFont.render(f"Draw a(n): {titleOfDrawing}!", 1, self.textColor)
         drawTextPos = drawText.get_rect(centerx = 600, y=125)
 
         screen.blit(drawText, drawTextPos)
@@ -28,11 +36,50 @@ class Drawer:
                     sys.exit()
                 if e.type == pygame.MOUSEBUTTONDOWN:
                     userHasNotClicked = False
-        
-    def writeCoordsToFile(self, listOfCoords):
+    
+    def deleteFileContents(self, drawing):
+        """Deletes file contents in drawing file"""
+
+        if drawing == "apple":
+            path = os.path.abspath('Apple.txt')
+        elif drawing == "baseball":
+            path = os.path.abspath('Baseball.txt')
+        elif drawing == "basketball":
+            path = os.path.abspath('Basketball.txt')
+        elif drawing == "bird":
+            path = os.path.abspath('Bird.txt')
+        elif drawing == "candle":
+            path = os.path.abspath('Candle.txt')
+        elif drawing == "clock":
+            path = os.path.abspath('Clock.txt')
+        elif drawing == "coffee mug":
+            path = os.path.abspath('CoffeeMug.txt')
+        elif drawing == "smiley face":
+            path = os.path.abspath('SmileyFace.txt')
+
+        baselineFile = open(path, "w")
+        baselineFile.write("")
+
+    def writeCoordsToFile(self, listOfCoords, drawing):
         """Writes the list of coordinates to a saved text file using JSON"""
 
-        path = os.path.abspath('BaselineDrawings.txt')
+        if drawing == "apple":
+            path = os.path.abspath('Apple.txt')
+        elif drawing == "baseball":
+            path = os.path.abspath('Baseball.txt')
+        elif drawing == "basketball":
+            path = os.path.abspath('Basketball.txt')
+        elif drawing == "bird":
+            path = os.path.abspath('Bird.txt')
+        elif drawing == "candle":
+            path = os.path.abspath('Candle.txt')
+        elif drawing == "clock":
+            path = os.path.abspath('Clock.txt')
+        elif drawing == "coffee mug":
+            path = os.path.abspath('CoffeeMug.txt')
+        elif drawing == "smiley face":
+            path = os.path.abspath('SmileyFace.txt')
+        
         baselineFile = open(path, "a")
         json.dump(listOfCoords, baselineFile)
 
@@ -42,22 +89,16 @@ class Drawer:
         stillDrawing = True
 
         #Restart and Finished buttons
-        textColor = (10, 10, 10)
-        inactiveButtonColor = (255, 220, 84)
-        activeButtonColor = (255, 204, 0)
-
-        smallFont = pygame.font.SysFont("leelawadeeuisemilight", 36)
-
-        restartText = smallFont.render("Restart!", 1, textColor)
-        finishedText = smallFont.render("Finished!", 1, textColor)
+        restartText = self.smallFont.render("Restart!", 1, self.textColor)
+        finishedText = self.smallFont.render("Finished!", 1, self.textColor)
 
         restartTextPos = restartText.get_rect(centerx = 475, y=600)
         finishedTextPos = finishedText.get_rect(x = 675, y = 600)
         restartButtonPos = (400, 585, 150, 85)
         finishedButtonPos = (660, 585, 160, 85)
 
-        pygame.draw.rect(screen, inactiveButtonColor, restartButtonPos)
-        pygame.draw.rect(screen, inactiveButtonColor, finishedButtonPos)
+        pygame.draw.rect(screen, self.inactiveButtonColor, restartButtonPos)
+        pygame.draw.rect(screen, self.inactiveButtonColor, finishedButtonPos)
         screen.blit(restartText, restartTextPos)
         screen.blit(finishedText, finishedTextPos)
 
@@ -65,7 +106,8 @@ class Drawer:
 
         listOfMouseCoordsString = ""
         listOfMouseCoords = []
-        shortenedListOfMouseCoords = []
+        shortenedListOfMouseCoords = ""
+        numCoordsInShortenedList = 0
         circleCount = 0
         coordsCount = 1
 
@@ -76,16 +118,16 @@ class Drawer:
 
             if 550 > mousePos[0] > 400 and 670 > mousePos[1] > 585:
                 #Hover over Restart button
-                pygame.draw.rect(screen, activeButtonColor, restartButtonPos)
+                pygame.draw.rect(screen, self.activeButtonColor, restartButtonPos)
                 screen.blit(restartText, restartTextPos)
             elif 820 > mousePos[0] > 660 and 670 > mousePos[1] > 585:
                 #Hover over Finished button
-                pygame.draw.rect(screen, activeButtonColor, finishedButtonPos)
+                pygame.draw.rect(screen, self.activeButtonColor, finishedButtonPos)
                 screen.blit(finishedText, finishedTextPos)
             else:
                 #Reset buttons
-                pygame.draw.rect(screen, inactiveButtonColor, restartButtonPos)
-                pygame.draw.rect(screen, inactiveButtonColor, finishedButtonPos)
+                pygame.draw.rect(screen, self.inactiveButtonColor, restartButtonPos)
+                pygame.draw.rect(screen, self.inactiveButtonColor, finishedButtonPos)
                 screen.blit(restartText, restartTextPos)
                 screen.blit(finishedText, finishedTextPos)
 
@@ -95,12 +137,13 @@ class Drawer:
                 if e.type == pygame.MOUSEBUTTONDOWN:
                     if 550 > mousePos[0] > 400 and 670 > mousePos[1] > 585:
                         #Press Restart button
-                        screen.fill((255, 112, 112))
-                        self.draw(drawing, settingBaselineDrawings)
-                        stillDrawing = False
+                        screen.fill(self.backgroundColor)
+                        self.showWhatToDraw(drawing)
+                        screen.fill(self.backgroundColor)
+                        return self.draw(drawing, settingBaselineDrawings)
                     elif 820 > mousePos[0] > 660 and 670 > mousePos[1] > 585:
                         #Press Finished button
-                        screen.fill((255, 112, 112))
+                        screen.fill(self.backgroundColor)
                         stillDrawing = False
 
                 #Mouse is being held (mouse is drawing)
@@ -109,7 +152,8 @@ class Drawer:
                         listOfMouseCoords += pygame.mouse.get_pos()
 
                         if coordsCount % 50 == 0:
-                            shortenedListOfMouseCoords.append(pygame.mouse.get_pos())
+                            shortenedListOfMouseCoords += f"\n{(pygame.mouse.get_pos())}"
+                            numCoordsInShortenedList += 1
                         coordsCount += 1
 
                         pygame.draw.circle(screen, (10, 70, 255), pygame.mouse.get_pos(), 3)
@@ -125,9 +169,10 @@ class Drawer:
 
             pygame.display.flip()
 
-        listOfMouseCoordsString = f"{len(shortenedListOfMouseCoords)}\n {drawing}:\n {shortenedListOfMouseCoords}"
+        listOfMouseCoordsString = f"{numCoordsInShortenedList}\n{drawing}:{shortenedListOfMouseCoords}"
 
         if settingBaselineDrawings:
-            self.writeCoordsToFile(listOfMouseCoordsString)
+            self.deleteFileContents(drawing)
+            self.writeCoordsToFile(listOfMouseCoordsString, drawing)
         else:
             return listOfMouseCoordsString
