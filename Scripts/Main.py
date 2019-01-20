@@ -4,8 +4,10 @@ import sys
 import pygame
 import Drawer
 import ImageAnalyzer
+import random
 
 pygame.init()
+pen = Drawer.Drawer()
 
 screen = pygame.display.set_mode((1200, 750))
 drawings = ["coffee mug", "apple", "clock", "basketball", "baseball", "candle", "bird", "smiley face"]
@@ -47,8 +49,7 @@ def homeScreen():
     while homeScreenLoop:
         for e in pygame.event.get():
             if e.type == pygame.QUIT:
-                pygame.quit()
-                quit()
+                sys.exit()
 
         mousePos = pygame.mouse.get_pos()
 
@@ -77,9 +78,6 @@ def homeScreen():
 
                 elif 805 > mousePos[0] > 375 and 570 > mousePos[1] > 485:
                     #Press baseline drawings button 
-
-                    print("pressed baseline drawings button")
-
                     homeScreenLoop = False
                     baselineDrawings()
             
@@ -92,9 +90,6 @@ def baselineDrawings():
     setBaselineDrawingsRunning = False
 
     #Password check
-
-    print("in password check")
-
     password = "poopoo"
     inputText = ''
     inputBox = pygame.Rect(350, 282, 500, 50)
@@ -110,25 +105,15 @@ def baselineDrawings():
     screen.blit(passwordText, passwordTextPos)
     screen.blit(placeholderText, placeholderTextPos)
 
-
-    print("about to run password check loop")
-
     while passWordCheckRunning:
         for e in pygame.event.get():
             if e.type == pygame.QUIT:
-                pygame.quit()
-                quit()
+                sys.exit()
             if e.type == pygame.MOUSEBUTTONDOWN:
                 if inputBox.collidepoint(e.pos):
-                    
-                    print("mouse click collided with input box")
-
                     inputBoxActive = True
                     pygame.draw.rect(screen, (255, 112, 112), (351, 283, 499, 45))
                 else:
-
-                    print("mouse click outside of input box")
-
                     inputBoxActive = False
                     inputText = ''
                     screen.blit(placeholderText, placeholderTextPos)
@@ -137,18 +122,12 @@ def baselineDrawings():
                     if e.key == pygame.K_RETURN:
                         passWordCheckRunning = False
                         if inputText == password:
-
-                            print("access granted")
-
                             setBaselineDrawingsRunning = True
                         else:
                             homeScreen()
                     elif e.key == pygame.K_BACKSPACE:
                         inputText = inputText[:-1]
                     else:
-
-                        print(f"adding {e.unicode} to inputText string")
-
                         inputText += e.unicode
 
         pygame.draw.rect(screen, (0, 157, 255), inputBox, 2)
@@ -156,14 +135,12 @@ def baselineDrawings():
 
     #Admin draws each object and saves the data to the BaselineDrawings.txt file
     while setBaselineDrawingsRunning:
-
-        print("prepared to set baseline drawings")
-
         clearScreen()
         for n in range(len(drawings)):
-            Drawer.showWhatToDraw(drawings[n])
             clearScreen()
-            Drawer.draw(drawings[n], True)
+            pen.showWhatToDraw(drawings[n])
+            clearScreen()
+            pen.draw(drawings[n], True)
 
         setBaselineDrawingsRunning = False
     
@@ -171,5 +148,12 @@ def baselineDrawings():
 
 def play():
     """Plays the actual game"""
+    randomDrawing = random.randint(0, (len(drawings) - 1))
     
+    clearScreen()
+    pen.showWhatToDraw(drawings[randomDrawing])
+    clearScreen()
+    coordsDrawn = pen.draw(drawings[randomDrawing], False)
+    print(coordsDrawn)
+
 homeScreen()
