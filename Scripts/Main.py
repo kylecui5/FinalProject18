@@ -1,5 +1,3 @@
-"""Main File"""
-
 import sys
 import pygame
 import Drawer
@@ -7,10 +5,18 @@ import ImageAnalyzer
 import random
 
 pygame.init()
-pen = Drawer.Drawer()
 
 screen = pygame.display.set_mode((1200, 750))
-drawings = ["coffee mug", "apple", "clock", "basketball", "baseball", "candle", "bird", "smiley face"]
+drawings = ["apple", "baseball", "basketball", "bird", "candle", "clock", "coffee mug", "smiley face"]
+
+textColor = (10, 10, 10)
+largeFont = pygame.font.SysFont("leelawadeeuisemilight", 48)
+smallFont = pygame.font.SysFont("leelawadeeuisemilight", 36)
+inactiveButtonColor = (255, 220, 84)
+activeButtonColor = (255, 204, 0)
+
+pen = Drawer.Drawer(textColor, largeFont, smallFont, inactiveButtonColor, activeButtonColor)
+analyzer = ImageAnalyzer.ImageAnalyzer()
 
 def clearScreen(backgroundColor = (255, 112, 112)):
     """Fills entire screen with a single color"""
@@ -22,13 +28,6 @@ def homeScreen():
     homeScreenLoop = True
 
     #Draw screen text and buttons
-    textColor = (10, 10, 10)
-    inactiveButtonColor = (255, 220, 84)
-    activeButtonColor = (255, 204, 0)
-
-    largeFont = pygame.font.SysFont("leelawadeeuisemilight", 48)
-    smallFont = pygame.font.SysFont("leelawadeeuisemilight", 36)
-
     welcomeText = largeFont.render("Kyle's \"Slow, Scribble!\"", 1, textColor)
     playButtonText = smallFont.render("Play!", 1, textColor)
     baselineDrawingsText = smallFont.render("Set Baseline Drawings", 1, textColor)
@@ -154,6 +153,8 @@ def play():
     pen.showWhatToDraw(drawings[randomDrawing])
     clearScreen()
     coordsDrawn = pen.draw(drawings[randomDrawing], False)
-    print(coordsDrawn)
+    guess = analyzer.compareDrawings(coordsDrawn, drawings)
+    print(guess)
+
 
 homeScreen()
