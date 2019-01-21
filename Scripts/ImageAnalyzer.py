@@ -99,11 +99,11 @@ class ImageAnalyzer:
                 for i in range(numCoordsBaselineDrawing):
                     closestPoint = self.getClosestPoint(baselineDrawingString.splitlines()[2 + i], userDrawing)
                     eachDistance += self.getDistTwoPoints(baselineDrawingString.splitlines()[2 + i], closestPoint)
-                    totalDistance = eachDistance / numCoordsBaselineDrawing + 2
+                    totalDistance = eachDistance / numCoordsBaselineDrawing + 3
             
             if numCoordsUserDrawing == numCoordsBaselineDrawing:
-                totalDistance -= 2
-
+                totalDistance -= 3
+            print(f"Distance to {drawings[n]} is: {totalDistance}")
             #totalDistance = eachDistance * self.getMultiplyFactor(baselineDrawingString, drawings)
 
             if totalDistance < leastDistance:
