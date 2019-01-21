@@ -94,11 +94,9 @@ class Drawer:
 
         restartTextPos = restartText.get_rect(centerx = 475, y=600)
         finishedTextPos = finishedText.get_rect(x = 675, y = 600)
-        restartButtonPos = (400, 585, 150, 85)
-        finishedButtonPos = (660, 585, 160, 85)
+        restartButtonPos = pygame.Rect(400, 585, 150, 85)
+        finishedButtonPos = pygame.Rect(660, 585, 160, 85)
 
-        pygame.draw.rect(screen, self.inactiveButtonColor, restartButtonPos)
-        pygame.draw.rect(screen, self.inactiveButtonColor, finishedButtonPos)
         screen.blit(restartText, restartTextPos)
         screen.blit(finishedText, finishedTextPos)
         pygame.draw.rect(screen, (255, 255, 255), (300, 100, 600, 450))
@@ -135,13 +133,15 @@ class Drawer:
                 if e.type == pygame.QUIT:
                     sys.exit()
                 if e.type == pygame.MOUSEBUTTONDOWN:
-                    if 550 > mousePos[0] > 400 and 670 > mousePos[1] > 585:
+                    #if 550 > mousePos[0] > 400 and 670 > mousePos[1] > 585:
+                    if restartButtonPos.collidepoint(e.pos):
                         #Press Restart button
                         screen.fill(self.backgroundColor)
                         self.showWhatToDraw(drawing)
                         screen.fill(self.backgroundColor)
                         return self.draw(drawing, settingBaselineDrawings)
-                    elif 820 > mousePos[0] > 660 and 670 > mousePos[1] > 585:
+                    #elif 820 > mousePos[0] > 660 and 670 > mousePos[1] > 585:
+                    elif finishedButtonPos.collidepoint(e.pos):
                         #Press Finished button
                         screen.fill(self.backgroundColor)
                         stillDrawing = False

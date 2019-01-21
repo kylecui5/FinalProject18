@@ -43,7 +43,7 @@ def homeScreen():
     baselineDrawingsTextPos = baselineDrawingsText.get_rect(x = 430, y = 500)
     successRateTextPos = successRateText.get_rect(x = 375, y = 600)
     playButtonPos = pygame.Rect(490, 385, 185, 85)
-    baselineDrawingsButtonPos = (375, 485, 430, 85)
+    baselineDrawingsButtonPos = pygame.Rect(375, 485, 430, 85)
 
     pygame.draw.rect(screen, inactiveButtonColor, playButtonPos)
     pygame.draw.rect(screen, inactiveButtonColor, baselineDrawingsButtonPos)
@@ -55,35 +55,32 @@ def homeScreen():
     #Check for user input
     while homeScreenLoop:
         for e in pygame.event.get():
+
+            mousePos = pygame.mouse.get_pos()
+
             if e.type == pygame.QUIT:
                 sys.exit()
+            elif 675 > mousePos[0] > 490 and 470 > mousePos[1] > 385:
+                #Hover over play button
+                pygame.draw.rect(screen, activeButtonColor, playButtonPos)
+                screen.blit(playButtonText, playButtonTextPos)
+            elif 805 > mousePos[0] > 375 and 570 > mousePos[1] > 485:
+                #Hover over baseline drawings button
+                pygame.draw.rect(screen, activeButtonColor, baselineDrawingsButtonPos)
+                screen.blit(baselineDrawingsText, baselineDrawingsTextPos)
+            else:
+                #Reset buttons
+                pygame.draw.rect(screen, inactiveButtonColor, playButtonPos)
+                pygame.draw.rect(screen, inactiveButtonColor, baselineDrawingsButtonPos)
+                screen.blit(playButtonText, playButtonTextPos)
+                screen.blit(baselineDrawingsText, baselineDrawingsTextPos)
 
-        mousePos = pygame.mouse.get_pos()
-
-        if playButtonPos.collidepoint(e.pos):
-            #Hover over play button
-            pygame.draw.rect(screen, activeButtonColor, playButtonPos)
-            screen.blit(playButtonText, playButtonTextPos)
-        elif 805 > mousePos[0] > 375 and 570 > mousePos[1] > 485:
-            #Hover over baseline drawings button
-            pygame.draw.rect(screen, activeButtonColor, baselineDrawingsButtonPos)
-            screen.blit(baselineDrawingsText, baselineDrawingsTextPos)
-        else:
-            #Reset buttons
-            pygame.draw.rect(screen, inactiveButtonColor, playButtonPos)
-            pygame.draw.rect(screen, inactiveButtonColor, baselineDrawingsButtonPos)
-            screen.blit(playButtonText, playButtonTextPos)
-            screen.blit(baselineDrawingsText, baselineDrawingsTextPos)
-
-        #Check for mouse clicks
-        for e in pygame.event.get():
             if e.type == pygame.MOUSEBUTTONDOWN:
-                if 675 > mousePos[0] > 490 and 470 > mousePos[1] > 385:
+                if playButtonPos.collidepoint(e.pos):
                     #Press play button
                     homeScreenLoop = False
                     play()
-
-                elif 805 > mousePos[0] > 375 and 570 > mousePos[1] > 485:
+                elif baselineDrawingsButtonPos.collidepoint(e.pos):
                     #Press baseline drawings button 
                     homeScreenLoop = False
                     baselineDrawings()
@@ -104,13 +101,11 @@ def displayThanksScreen(computerCorrect):
     if computerCorrect:
         correctGuesses += 1
         guessText = largeFont.render(f"Great! Thanks for training me!", 1, textColor)
-        guessTextPos = guessText.get_rect(centerx = 600, y = 125)
-        screen.blit(guessText, guessTextPos)
     else:
         guessText = largeFont.render(f"Aww man! Thanks for playing!", 1, textColor)
-        guessTextPos = guessText.get_rect(centerx = 600, y = 125)
-        screen.blit(guessText, guessTextPos)
-
+        
+    guessTextPos = guessText.get_rect(centerx = 600, y = 125)
+    screen.blit(guessText, guessTextPos)
     totalGuesses += 1
 
     statsFile = open(path, "w")
@@ -139,8 +134,8 @@ def displayGuess(guess):
     guessTextPos = guessText.get_rect(centerx = 600, y = 125)
     yesButtonTextPos = yesButtonText.get_rect(x = 450, y = 400)
     noButtonTextPos = noButtonText.get_rect(x = 650, y = 400)
-    yesButtonPos = (425, 385, 110, 85)
-    noButtonPos = (625, 385, 110, 85)
+    yesButtonPos = pygame.Rect(425, 385, 110, 85)
+    noButtonPos = pygame.Rect(625, 385, 110, 85)
 
     pygame.draw.rect(screen, inactiveButtonColor, yesButtonPos)
     pygame.draw.rect(screen, inactiveButtonColor, noButtonPos)
@@ -172,12 +167,11 @@ def displayGuess(guess):
 
         for e in pygame.event.get():
             if e.type == pygame.MOUSEBUTTONDOWN:
-                if 535 > mousePos[0] > 425 and 470 > mousePos[1] > 385:
+                if yesButtonPos.collidepoint(e.pos):
                     #Press yes button
                     displayThanksScreen(True)
                     homeScreen()
-
-                elif 735 > mousePos[0] > 625 and 470 > mousePos[1] > 385:
+                elif noButtonPos.collidepoint(e.pos):
                     #Press no button 
                     displayThanksScreen(False)
                     homeScreen()
