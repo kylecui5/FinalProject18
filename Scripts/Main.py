@@ -144,10 +144,6 @@ def displayGuess(guess):
     screen.blit(noButtonText, noButtonTextPos)
 
     while True:
-        for e in pygame.event.get():
-            if e.type == pygame.QUIT:
-                sys.exit()
-
         mousePos = pygame.mouse.get_pos()
         
         if 535 > mousePos[0] > 425 and 470 > mousePos[1] > 385:
@@ -164,8 +160,9 @@ def displayGuess(guess):
             pygame.draw.rect(screen, inactiveButtonColor, noButtonPos)
             screen.blit(yesButtonText, yesButtonTextPos)
             screen.blit(noButtonText, noButtonTextPos)
-
         for e in pygame.event.get():
+            if e.type == pygame.QUIT:
+                sys.exit()
             if e.type == pygame.MOUSEBUTTONDOWN:
                 if yesButtonPos.collidepoint(e.pos):
                     #Press yes button
