@@ -34,7 +34,7 @@ class ImageAnalyzer:
         return closestPoint
 
     def getMultiplyFactor(self, drawing, drawingsList):
-        """Returns the multiply factor for eachDistance which balances 
+        """Returns the multiply factor for eachDistance to balance
         drawings with more coordinates with drawings with less coordinates"""
 
         numCoordsDrawing = self.getNumCoords(drawing)
@@ -94,12 +94,17 @@ class ImageAnalyzer:
                 for i in range(numCoordsUserDrawing):
                     closestPoint = self.getClosestPoint(userDrawing.splitlines()[2 + i], baselineDrawingString)
                     eachDistance += self.getDistTwoPoints(userDrawing.splitlines()[2 + i], closestPoint)
+                    totalDistance = eachDistance / numCoordsUserDrawing
             else:
                 for i in range(numCoordsBaselineDrawing):
                     closestPoint = self.getClosestPoint(baselineDrawingString.splitlines()[2 + i], userDrawing)
                     eachDistance += self.getDistTwoPoints(baselineDrawingString.splitlines()[2 + i], closestPoint)
+                    totalDistance = eachDistance / numCoordsBaselineDrawing + 2
             
-            totalDistance = eachDistance * self.getMultiplyFactor(baselineDrawingString, drawings)
+            if numCoordsUserDrawing == numCoordsBaselineDrawing:
+                totalDistance -= 2
+
+            #totalDistance = eachDistance * self.getMultiplyFactor(baselineDrawingString, drawings)
 
             if totalDistance < leastDistance:
                 leastDistance = totalDistance

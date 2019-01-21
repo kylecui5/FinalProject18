@@ -1,4 +1,5 @@
 import sys
+import os
 import pygame
 import Drawer
 import ImageAnalyzer
@@ -26,15 +27,21 @@ def homeScreen():
     """Displays Home screen"""
     clearScreen()
     homeScreenLoop = True
+    
+    path = os.path.abspath('Stats.txt')
+    statsFile = open(path, "r")
+    successRate = int(int(statsFile.readlines(1)[0]) / int(statsFile.readlines(2)[0]) * 100)
 
     #Draw screen text and buttons
     welcomeText = largeFont.render("Kyle's \"Slow, Scribble!\"", 1, textColor)
     playButtonText = smallFont.render("Play!", 1, textColor)
     baselineDrawingsText = smallFont.render("Set Baseline Drawings", 1, textColor)
+    successRateText = smallFont.render(f"Current Success Rate: {successRate}%", 1, textColor)
 
     welcomeTextPos = welcomeText.get_rect(centerx = 600, y = 125)
     playButtonTextPos = playButtonText.get_rect(x = 550, y = 400)
     baselineDrawingsTextPos = baselineDrawingsText.get_rect(x = 430, y = 500)
+    successRateTextPos = successRateText.get_rect(x = 375, y = 600)
     playButtonPos = (490, 385, 185, 85)
     baselineDrawingsButtonPos = (375, 485, 430, 85)
 
@@ -43,6 +50,7 @@ def homeScreen():
     screen.blit(welcomeText, welcomeTextPos)
     screen.blit(playButtonText, playButtonTextPos)
     screen.blit(baselineDrawingsText, baselineDrawingsTextPos)
+    screen.blit(successRateText, successRateTextPos)
 
     #Check for user input
     while homeScreenLoop:
@@ -83,11 +91,18 @@ def homeScreen():
         pygame.display.flip()
 
 def displayThanksScreen(computerCorrect):
-    """Displays corresponding screen for whether or not the computer guess was correct"""
+    """Displays corresponding screen for whether or not the computer guess was correct and 
+    updates success rate in Stats.txt"""
 
     clearScreen()
+    path = os.path.abspath('Stats.txt')
+    statsFile = open(path, "r")
+    correctGuesses = int(statsFile.readlines(1)[0])
+    totalGuesses = int(statsFile.readlines(2)[0])
+    statsFile.close()
 
     if computerCorrect:
+        correctGuesses += 1
         guessText = largeFont.render(f"Great! Thanks for training me!", 1, textColor)
         guessTextPos = guessText.get_rect(centerx = 600, y = 125)
         screen.blit(guessText, guessTextPos)
@@ -95,6 +110,12 @@ def displayThanksScreen(computerCorrect):
         guessText = largeFont.render(f"Aww man! Thanks for playing!", 1, textColor)
         guessTextPos = guessText.get_rect(centerx = 600, y = 125)
         screen.blit(guessText, guessTextPos)
+
+    totalGuesses += 1
+
+    statsFile = open(path, "w")
+    statsFile.write(f"{correctGuesses}\n")
+    statsFile.write(f"{totalGuesses}")
 
     pygame.display.flip()
     
