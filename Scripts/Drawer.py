@@ -149,21 +149,21 @@ class Drawer:
                 #Mouse is being held (mouse is drawing)
                 elif pygame.mouse.get_pressed()[0]:
 
-                        listOfMouseCoords += pygame.mouse.get_pos()
+                    listOfMouseCoords += pygame.mouse.get_pos()
 
-                        if coordsCount % 25 == 0:
-                            shortenedListOfMouseCoords += f"\n{(pygame.mouse.get_pos())}"
-                            numCoordsInShortenedList += 1
-                        coordsCount += 1
+                    if coordsCount % 25 == 0:
+                        shortenedListOfMouseCoords += f"\n{(pygame.mouse.get_pos())}"
+                        numCoordsInShortenedList += 1
+                    coordsCount += 1
 
-                        pygame.draw.circle(screen, (10, 70, 255), pygame.mouse.get_pos(), 3)
+                    pygame.draw.circle(screen, (10, 70, 255), pygame.mouse.get_pos(), 3)
 
-                        if circleCount > 0:
-                            #Connects the two previous drawn circles with a line
-                            pygame.draw.line(screen, (10, 70, 255), (listOfMouseCoords[circleCount-3], listOfMouseCoords[circleCount-2]), (listOfMouseCoords[circleCount-1], listOfMouseCoords[circleCount]), 6)
-                            circleCount += 2
-                        else:
-                            circleCount += 3
+                    if circleCount > 0:
+                        #Connects the two previous drawn circles with a line
+                        pygame.draw.line(screen, (10, 70, 255), (listOfMouseCoords[circleCount-3], listOfMouseCoords[circleCount-2]), (listOfMouseCoords[circleCount-1], listOfMouseCoords[circleCount]), 6)
+                        circleCount += 2
+                    else:
+                        circleCount += 3
                 else:
                     circleCount = 0
 
