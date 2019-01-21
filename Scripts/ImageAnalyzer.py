@@ -22,7 +22,7 @@ class ImageAnalyzer:
         """Returns the closest point in listOfPoints to point"""
 
         closestDist = 100000000000
-
+        
         for n in range(self.getNumCoords(listOfPoints)):
 
             eachDist = self.getDistTwoPoints(point, listOfPoints.splitlines()[2 + n])
@@ -60,8 +60,6 @@ class ImageAnalyzer:
 
         if drawing == "apple":
             path = os.path.abspath('Apple.txt')
-        elif drawing == "basketball":
-            path = os.path.abspath('Basketball.txt')
         elif drawing == "bird":
             path = os.path.abspath('Bird.txt')
         elif drawing == "candle":
@@ -70,6 +68,10 @@ class ImageAnalyzer:
             path = os.path.abspath('Clock.txt')
         elif drawing == "coffee mug":
             path = os.path.abspath('CoffeeMug.txt')
+        elif drawing == "finger":
+            path = os.path.abspath('Finger.txt')
+        elif drawing == "moustache":
+            path = os.path.abspath('Moustache.txt')
         elif drawing == "smiley face":
             path = os.path.abspath('SmileyFace.txt')
 
@@ -97,10 +99,10 @@ class ImageAnalyzer:
                 for i in range(numCoordsBaselineDrawing):
                     closestPoint = self.getClosestPoint(baselineDrawingString.splitlines()[2 + i], userDrawing)
                     eachDistance += self.getDistTwoPoints(baselineDrawingString.splitlines()[2 + i], closestPoint)
-                    totalDistance = eachDistance / numCoordsBaselineDrawing + 3
+                    totalDistance = eachDistance / numCoordsBaselineDrawing + 1.5
             
             if numCoordsUserDrawing == numCoordsBaselineDrawing:
-                totalDistance -= 3
+                totalDistance -= 2.5
             print(f"Distance to {drawings[n]} is: {totalDistance}")
             #totalDistance = eachDistance * self.getMultiplyFactor(baselineDrawingString, drawings)
 

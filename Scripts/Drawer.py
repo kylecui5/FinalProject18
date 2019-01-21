@@ -42,8 +42,6 @@ class Drawer:
 
         if drawing == "apple":
             path = os.path.abspath('Apple.txt')
-        elif drawing == "basketball":
-            path = os.path.abspath('Basketball.txt')
         elif drawing == "bird":
             path = os.path.abspath('Bird.txt')
         elif drawing == "candle":
@@ -52,6 +50,10 @@ class Drawer:
             path = os.path.abspath('Clock.txt')
         elif drawing == "coffee mug":
             path = os.path.abspath('CoffeeMug.txt')
+        elif drawing == "finger":
+            path = os.path.abspath('Finger.txt')
+        elif drawing == "moustache":
+            path = os.path.abspath('Moustache.txt')
         elif drawing == "smiley face":
             path = os.path.abspath('SmileyFace.txt')
 
@@ -63,8 +65,6 @@ class Drawer:
 
         if drawing == "apple":
             path = os.path.abspath('Apple.txt')
-        elif drawing == "basketball":
-            path = os.path.abspath('Basketball.txt')
         elif drawing == "bird":
             path = os.path.abspath('Bird.txt')
         elif drawing == "candle":
@@ -73,6 +73,10 @@ class Drawer:
             path = os.path.abspath('Clock.txt')
         elif drawing == "coffee mug":
             path = os.path.abspath('CoffeeMug.txt')
+        elif drawing == "finger":
+            path = os.path.abspath('Finger.txt')
+        elif drawing == "moustache":
+            path = os.path.abspath('Moustache.txt')
         elif drawing == "smiley face":
             path = os.path.abspath('SmileyFace.txt')
         
@@ -97,7 +101,7 @@ class Drawer:
         pygame.draw.rect(screen, self.inactiveButtonColor, finishedButtonPos)
         screen.blit(restartText, restartTextPos)
         screen.blit(finishedText, finishedTextPos)
-
+        pygame.draw.rect(screen, (255, 255, 255), (300, 100, 600, 450))
         pygame.display.flip()
 
         listOfMouseCoordsString = ""
@@ -147,7 +151,7 @@ class Drawer:
 
                         listOfMouseCoords += pygame.mouse.get_pos()
 
-                        if coordsCount % 50 == 0:
+                        if coordsCount % 25 == 0:
                             shortenedListOfMouseCoords += f"\n{(pygame.mouse.get_pos())}"
                             numCoordsInShortenedList += 1
                         coordsCount += 1

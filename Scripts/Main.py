@@ -8,7 +8,7 @@ import random
 pygame.init()
 
 screen = pygame.display.set_mode((1200, 750))
-drawings = ["apple", "basketball", "bird", "candle", "clock", "coffee mug", "smiley face"]
+drawings = ["apple", "bird", "candle", "clock", "coffee mug", "finger", "moustache", "smiley face"]
 
 textColor = (10, 10, 10)
 largeFont = pygame.font.SysFont("leelawadeeuisemilight", 48)
@@ -42,7 +42,7 @@ def homeScreen():
     playButtonTextPos = playButtonText.get_rect(x = 550, y = 400)
     baselineDrawingsTextPos = baselineDrawingsText.get_rect(x = 430, y = 500)
     successRateTextPos = successRateText.get_rect(x = 375, y = 600)
-    playButtonPos = (490, 385, 185, 85)
+    playButtonPos = pygame.Rect(490, 385, 185, 85)
     baselineDrawingsButtonPos = (375, 485, 430, 85)
 
     pygame.draw.rect(screen, inactiveButtonColor, playButtonPos)
@@ -60,7 +60,7 @@ def homeScreen():
 
         mousePos = pygame.mouse.get_pos()
 
-        if 675 > mousePos[0] > 490 and 470 > mousePos[1] > 385:
+        if playButtonPos.collidepoint(e.pos):
             #Hover over play button
             pygame.draw.rect(screen, activeButtonColor, playButtonPos)
             screen.blit(playButtonText, playButtonTextPos)
