@@ -8,7 +8,7 @@ import random
 pygame.init()
 
 screen = pygame.display.set_mode((1200, 750))
-drawings = ["apple", "baseball", "basketball", "bird", "candle", "clock", "coffee mug", "smiley face"]
+drawings = ["apple", "basketball", "bird", "candle", "clock", "coffee mug", "smiley face"]
 
 textColor = (10, 10, 10)
 largeFont = pygame.font.SysFont("leelawadeeuisemilight", 48)

@@ -60,8 +60,6 @@ class ImageAnalyzer:
 
         if drawing == "apple":
             path = os.path.abspath('Apple.txt')
-        elif drawing == "baseball":
-            path = os.path.abspath('Baseball.txt')
         elif drawing == "basketball":
             path = os.path.abspath('Basketball.txt')
         elif drawing == "bird":
