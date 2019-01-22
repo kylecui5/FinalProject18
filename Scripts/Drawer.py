@@ -5,7 +5,7 @@ import pygame
 
 pygame.init()
 
-screen = pygame.display.set_mode((1200, 750))
+screen = pygame.display.set_mode((1200, 700))
 
 class Drawer:
     """Provides drawing functions"""
@@ -26,8 +26,11 @@ class Drawer:
 
         drawText = self.largeFont.render(f"Draw a(n): {titleOfDrawing}!", 1, self.textColor)
         drawTextPos = drawText.get_rect(centerx = 600, y=125)
+        clickText = self.smallFont.render("Click to continue...", 1, self.textColor)
+        clickTextPos = clickText.get_rect(centerx = 600, y = 400)
 
         screen.blit(drawText, drawTextPos)
+        screen.blit(clickText, clickTextPos)
         pygame.display.flip()
 
         while userHasNotClicked:

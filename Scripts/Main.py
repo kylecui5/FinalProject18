@@ -4,10 +4,11 @@ import pygame
 import Drawer
 import ImageAnalyzer
 import random
+import time
 
 pygame.init()
 
-screen = pygame.display.set_mode((1200, 750))
+screen = pygame.display.set_mode((1200, 700))
 drawings = ["apple", "bird", "candle", "clock", "coffee mug", "finger", "moustache", "smiley face"]
 
 textColor = (10, 10, 10)
@@ -240,6 +241,7 @@ def baselineDrawings():
 
 def play():
     """Plays the actual game"""
+    random.seed(time.time())
     randomDrawing = random.randint(0, (len(drawings) - 1))
     
     clearScreen()
