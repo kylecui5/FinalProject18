@@ -26,6 +26,7 @@ def clearScreen(backgroundColor = (255, 112, 112)):
 
 def homeScreen():
     """Displays Home screen"""
+    
     clearScreen()
     homeScreenLoop = True
     
@@ -109,6 +110,7 @@ def displayThanksScreen(computerCorrect):
     screen.blit(guessText, guessTextPos)
     totalGuesses += 1
 
+    #Update success rate
     statsFile = open(path, "w")
     statsFile.write(f"{correctGuesses}\n")
     statsFile.write(f"{totalGuesses}")
@@ -178,6 +180,7 @@ def displayGuess(guess):
 
 def baselineDrawings():
     """Displays baseline drawings screen to set baseline drawings"""
+
     clearScreen()
     passWordCheckRunning = True
     setBaselineDrawingsRunning = False
@@ -188,8 +191,6 @@ def baselineDrawings():
     inputBox = pygame.Rect(350, 282, 500, 50)
     inputBoxActive = False
 
-    textColor = (10, 10, 10)
-    smallFont = pygame.font.SysFont("leelawadeeuisemilight", 36)
     smallerFont = pygame.font.SysFont("leelawadeeuisemilight", 24)
     passwordText = smallFont.render("Password:", 1, textColor)
     passwordTextPos = passwordText.get_rect(x = 525, y = 200)
@@ -203,13 +204,16 @@ def baselineDrawings():
             if e.type == pygame.QUIT:
                 sys.exit()
             if e.type == pygame.MOUSEBUTTONDOWN:
+                #Click into input box
                 if inputBox.collidepoint(e.pos):
                     inputBoxActive = True
                     pygame.draw.rect(screen, (255, 112, 112), (351, 283, 499, 45))
+                #Click out of input box
                 else:
                     inputBoxActive = False
                     inputText = ''
                     screen.blit(placeholderText, placeholderTextPos)
+            #Check password
             if e.type == pygame.KEYDOWN:
                 if inputBoxActive:
                     if e.key == pygame.K_RETURN:
@@ -226,7 +230,7 @@ def baselineDrawings():
         pygame.draw.rect(screen, (0, 157, 255), inputBox, 2)
         pygame.display.flip()
 
-    #Admin draws each object and saves the data to the BaselineDrawings.txt file
+    #Admin draws each object and saves the data to each baseline file
     while setBaselineDrawingsRunning:
         clearScreen()
         for n in range(len(drawings)):
@@ -241,6 +245,8 @@ def baselineDrawings():
 
 def play():
     """Plays the actual game"""
+
+    #Choose a random drawing to draw
     random.seed(time.time())
     randomDrawing = random.randint(0, (len(drawings) - 1))
     

@@ -33,26 +33,8 @@ class ImageAnalyzer:
         
         return closestPoint
 
-    def getMultiplyFactor(self, drawing, drawingsList):
-        """Returns the multiply factor for eachDistance to balance
-        drawings with more coordinates with drawings with less coordinates"""
-
-        numCoordsDrawing = self.getNumCoords(drawing)
-
-        maxNumCoordsDrawing = 0
-
-        for n in range(len(drawingsList)):
-            coordString = self.getBaselineCoords(drawingsList[n])
-            if self.getNumCoords(coordString) > maxNumCoordsDrawing:
-                maxNumCoordsDrawing = self.getNumCoords(coordString)
-                maxDrawing = n
-        
-        maxCoordString = self.getBaselineCoords(drawingsList[maxDrawing])
-        return numCoordsDrawing / self.getNumCoords(maxCoordString)
-
     def getNumCoords(self, coordString):
         """Returns the first line of coordString which is the number of coordinates in coordString"""
-
         return int(coordString.splitlines()[0])
 
     def getBaselineCoords(self, drawing):
@@ -86,6 +68,7 @@ class ImageAnalyzer:
 
         numCoordsUserDrawing = self.getNumCoords(userDrawing)
         
+        #Compares user drawing to each baseline drawing
         for n in range(len(drawings)):
             baselineDrawingString = self.getBaselineCoords(drawings[n])
             numCoordsBaselineDrawing = self.getNumCoords(baselineDrawingString)
@@ -103,8 +86,6 @@ class ImageAnalyzer:
             
             if numCoordsUserDrawing == numCoordsBaselineDrawing:
                 totalDistance -= 2.5
-            print(f"Distance to {drawings[n]} is: {totalDistance}")
-            #totalDistance = eachDistance * self.getMultiplyFactor(baselineDrawingString, drawings)
 
             if totalDistance < leastDistance:
                 leastDistance = totalDistance

@@ -12,6 +12,7 @@ class Drawer:
 
     def __init__(self, textColor, largeFont, smallFont, inactiveButtonColor, activeButtonColor):
         """Initializes variables"""
+
         self.textColor = textColor
         self.largeFont = largeFont
         self.smallFont = smallFont
@@ -87,7 +88,7 @@ class Drawer:
         json.dump(listOfCoords, baselineFile)
 
     def draw(self, drawing, settingBaselineDrawings):
-        """"Lets the user draw an object"""
+        """"User draws an object"""
 
         stillDrawing = True
 
