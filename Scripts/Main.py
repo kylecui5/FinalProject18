@@ -183,7 +183,7 @@ def baselineDrawings():
     setBaselineDrawingsRunning = False
 
     #Password check
-    password = "poopoo"
+    password = "holahola"
     inputText = ''
     inputBox = pygame.Rect(350, 282, 500, 50)
     inputBoxActive = False

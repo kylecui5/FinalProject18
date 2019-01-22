@@ -20,3 +20,8 @@ Sources include:
 Modules Used Include:
 * JSON
 * PyGame
+
+Run Main.py to start the program.
+
+*Note* The password for setting baseline drawings currently is
+"holahola". It can be changed in line 186 of Main.py
