@@ -1,9 +1,22 @@
 # Intro to Programming Final Project - Fall 2018
 
-* Project details are in description.md
-* Replace the content of this file with your own info about your project before the due date
-* Don't forget to fill out the [Project Proposal Form](https://airtable.com/shrrdA41unoBvi6Ki) before break.
+* Kyle's "Slow, Scribble"
 
-## Setting Up Your Repo
+* Based on Google's "Quick, Draw!", this game serves to identify a
+* simple drawing drawn by the user from a short list of possible
+* drawings. Possible drawings include an apple, a bird, a candle,
+* a clock, a coffee mug, a finger, a moustacahe, and a smiley face.
+* It guesses the drawing by comparing the coordinates drawn with a
+* set of baseline drawings and choosing the baseline drawing that
+* has the least average distance to a closest point per coordinate.
+* It does not use machine learning or artificial intelligence to
+* change future guesses based on previous user drawings.
 
-On the GitHub page for this repository, click the "Fork" button. This will create your own copy of this repository, linked to my original. Use the same cloning method we used before to clone the repository to your PythonAnywhere account
+* Sources include:
+* PyGame Documentation
+* StackOverflow Forums
+* Python Documentation
+
+* Modules Used Include:
+* JSON
+* PyGame
