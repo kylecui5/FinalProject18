@@ -12,10 +12,13 @@ has the least average distance to a closest point per coordinate.
 It does not use machine learning or artificial intelligence to
 change future guesses based on previous user drawings.
 
+Flowchart:
+https://drive.google.com/file/d/1deZ3Jm3pB9oWFWz2s2s2ZK3CEoX_Jnfh/view?usp=sharing
+
 Sources include:
-* PyGame Documentation
+* PyGame Documentation https://www.pygame.org/docs/
 * StackOverflow Forums
-* Python Documentation
+* Python Documentation https://docs.python.org/3.7/tutorial/index.html
 
 Modules Used Include:
 * JSON
