@@ -102,7 +102,7 @@ def displayThanksScreen(computerCorrect):
 
     if computerCorrect:
         correctGuesses += 1
-        guessText = largeFont.render(f"Great! Thanks for training me!", 1, textColor)
+        guessText = largeFont.render(f"Great! Thanks for playing!", 1, textColor)
     else:
         guessText = largeFont.render(f"Aww man! Thanks for playing!", 1, textColor)
         
